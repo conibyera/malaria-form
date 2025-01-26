@@ -33,8 +33,9 @@ def create_pdf(data):
     return pdf_file
 
 def send_email(pdf_file, recipient_email):
-    sender_email = os.getenv("SENDER_EMAIL")
-    sender_password = os.getenv("EMAIL_PASSWORD")
+    # Access the secrets stored in Streamlit Cloud
+    sender_email = st.secrets["email"]["sender_email"]
+    sender_password = st.secrets["email"]["sender_password"]
 
     message = MIMEMultipart()
     message["From"] = sender_email
@@ -56,14 +57,14 @@ def send_email(pdf_file, recipient_email):
 
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
-             server.login(sender_email, sender_password)
-             server.sendmail(sender_email, recipient_email, message)
+            server.login(sender_email, sender_password)
+            server.sendmail(sender_email, recipient_email, message)
         st.success("Email sent successfully!")
     except Exception as e:
         st.error(f"Failed to send email: {e}")
 
 def main():
-    st.title(" Rapid Malaria Clinical Assessment Submission Form")
+    st.title("Rapid Malaria Clinical Assessment Submission Form")
     
     with st.form("submission_form"):
         form_data = {}
@@ -108,3 +109,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
