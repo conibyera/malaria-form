@@ -59,7 +59,7 @@ def send_email(pdf_file, recipient_email):
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
             server.login(sender_email, sender_password)
             server.sendmail(sender_email, recipient_email, message.as_string())
-        st.success("Email sent successfully!")
+        #st.success("Email sent successfully!")
     except Exception as e:
         st.error(f"Failed to send email: {e}")
 
@@ -94,7 +94,7 @@ def main():
             else:
                 # Generate PDF with form data
                 pdf_file = create_pdf(form_data)  # Generate the PDF file
-                recipient_email = "diagai2024@gmail.com"  # Hardcoded recipient email
+                recipient_email = "deusishe@gmail.com"  # Hardcoded recipient email
                 try:
                     send_email(pdf_file=pdf_file, recipient_email=recipient_email)  
                     st.success("Form submitted successfully!")
