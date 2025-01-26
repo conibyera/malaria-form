@@ -101,7 +101,7 @@ def main():
                 st.error("Participant ID must not exceed 12 digits.")
             else:
                 pdf_file = create_pdf(form_data)
-                recipient_email = st.text_input("Enter recipient email:", "your_email@example.com")
+                recipient_email = st.text_input("Enter recipient email:", "diagai2024@gmail.com")
                 if recipient_email:
                     send_email(pdf_file, recipient_email)
                     os.remove(pdf_file)  # Clean up the temporary PDF file
