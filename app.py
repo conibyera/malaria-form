@@ -84,16 +84,13 @@ def main():
                 form_data[field] = response
                 if response == "Yes":
                     st.session_state.show_others_details = True
+                    others_details = st.text_area("Please specify details for 'Others'", key="others_details")
+                    form_data["Others Details"] = others_details
                 else:
                     st.session_state.show_others_details = False
             else:
                 form_data[field] = st.radio(field, options=["No", "Yes"], index=0, key=field)
-
-        container = st.container()
-        with container:
-           if st.session_state.show_others_details:
-               others_details = st.text_area("Please specify details for 'Others'", key="others_details")
-               form_data["Others Details"] = others_details      
+ 
 
         submitted = st.form_submit_button("Submit")
 
