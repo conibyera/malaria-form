@@ -84,13 +84,13 @@ def main():
         submitted = st.form_submit_button("Submit")
 
         if submitted:
-            # Validate Participant ID: check if it is numeric and up to 12 digits
+            # Validate Participant ID: check if it is alpha-numeric and up to 12 digits
             if not participant_id:
                 st.error("Participant ID is required.")
-            elif not participant_id.isdigit():
-                st.error("Participant ID must only contain digits.")
+            elif not participant_id.isalnum():
+                st.error("Participant ID must only contain alpha-numeric characters.")
             elif len(participant_id) > 12:
-                st.error("Participant ID must not exceed 12 digits.")
+                st.error("Participant ID must not exceed 12 alpha-numeric-characters.")
             else:
                 # Generate PDF with form data
                 pdf_file = create_pdf(form_data)  # Generate the PDF file
