@@ -5,7 +5,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
-import os
+from pathlib import Path
 
 # Fields for the form
 fields = [
@@ -33,7 +33,7 @@ def create_pdf(data):
     return pdf_file
 
 def send_email(pdf_file, recipient_email):
-    # Access the secrets stored in Streamlit Cloud
+    # Access secrets from Streamlit Cloud
     sender_email = st.secrets["email"]["sender_email"]
     sender_password = st.secrets["email"]["sender_password"]
 
@@ -51,14 +51,14 @@ def send_email(pdf_file, recipient_email):
         encoders.encode_base64(part)
         part.add_header(
             "Content-Disposition",
-            f"attachment; filename={os.path.basename(pdf_file)}",
+            f"attachment; filename={Path(pdf_file).name}",
         )
         message.attach(part)
 
     try:
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
             server.login(sender_email, sender_password)
-            server.sendmail(sender_email, recipient_email, message)
+            server.sendmail(sender_email, recipient_email, message.as_string())
         st.success("Email sent successfully!")
     except Exception as e:
         st.error(f"Failed to send email: {e}")
@@ -102,8 +102,7 @@ def main():
                 recipient_email = st.text_input("Enter recipient email:", "diagai2024@gmail.com")
                 if recipient_email:
                     send_email(pdf_file, recipient_email)
-                    os.remove(pdf_file)  # Clean up the temporary PDF file
-
+                    Path(pdf_file).unlink()  # Clean up the temporary PDF file
 
 if __name__ == "__main__":
     main()
