@@ -92,8 +92,13 @@ def main():
             elif len(participant_id) > 12:
                 st.error("Participant ID must not exceed 12 digits.")
             else:
-                # You can proceed with the email logic here
-                st.success("Form submitted successfully!")
+                recipient_email = "diagai2024@gmail.com"  # Hardcoded recipient email
+                try:
+                    send_email(pdf_file="form_submission.pdf", recipient_email=recipient_email)  
+                    st.success("Form submitted successfully!")
+                except Exception as e:
+                    st.error(f"Failed to send email: {e}")
+
 
 if __name__ == "__main__":
     main()
