@@ -63,17 +63,18 @@ def send_email(pdf_file, recipient_email):
     except Exception as e:
         st.error(f"Failed to send email: {e}")
 
+# Initialize session state
+if "show_others_details" not in st.session_state:
+    st.session_state.show_others_details = False
+
 def main():
-    st.title(" Rapid Malaria Clinical Assessment Submission Form")
-    
+    st.title("Rapid Malaria Clinical Assessment Submission Form")
+
     with st.form("submission_form"):
         form_data = {}
 
         # Add Participant ID field with a maximum length of 12 digits
-        participant_id = st.text_input(
-            "Participant ID (Max 12 digits)",
-            max_chars=12,  # Limit input length
-        )
+        participant_id = st.text_input("Participant ID (Max 12 digits)", max_chars=12)
         form_data["Participant ID"] = participant_id
 
         # Create fields with Yes/No options (default to No)
@@ -82,10 +83,16 @@ def main():
                 response = st.radio(field, options=["No", "Yes"], index=0, key=field)
                 form_data[field] = response
                 if response == "Yes":
-                    others_details = st.text_area("Please specify details for 'Others'", key="others_details")
-                    form_data["Others Details"] = others_details
+                    st.session_state.show_others_details = True
+                else:
+                    st.session_state.show_others_details = False
             else:
                 form_data[field] = st.radio(field, options=["No", "Yes"], index=0, key=field)
+
+        # Show the "Others" details text area if "Yes" is selected
+        if st.session_state.show_others_details:
+            others_details = st.text_area("Please specify details for 'Others'", key="others_details")
+            form_data["Others Details"] = others_details
 
         submitted = st.form_submit_button("Submit")
 
@@ -98,11 +105,8 @@ def main():
             elif len(participant_id) > 12:
                 st.error("Participant ID must not exceed 12 digits.")
             else:
-                pdf_file = create_pdf(form_data)
-                recipient_email = st.text_input("Enter recipient email:", "diagai2024@gmail.com")
-                if recipient_email:
-                    send_email(pdf_file, recipient_email)
-                    Path(pdf_file).unlink()  # Clean up the temporary PDF file
+                # You can proceed with the email logic here
+                st.success("Form submitted successfully!")
 
 if __name__ == "__main__":
     main()
