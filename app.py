@@ -69,13 +69,13 @@ def main():
     with st.form("submission_form"):
         form_data = {}
 
-        # Add Participant ID field with a maximum length of 12 digits
-        participant_id = st.text_input("Participant ID (Max 12 digits)", max_chars=12)
+        # Add Participant ID field with a maximum length of 12 alpha-numeric characters
+        participant_id = st.text_input("Participant ID (Max 12 alpha-numeric characters)", max_chars=12)
         form_data["Participant ID"] = participant_id
 
         # Create fields with Yes/No options (default to No)
         for field in fields:
-            form_data[field] = st.radio(field, options=["No", "Yes"], index=0, key=field)
+            form_data[field] = st.radio(field, options=["Yes", "No"], index=1, key=field)
 
         # Always show the "Others" text area with the heading
         others_details = st.text_area("If yes, please specify details for 'Others'", key="others_details")
