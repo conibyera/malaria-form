@@ -55,10 +55,9 @@ def send_email(pdf_file, recipient_email):
         message.attach(part)
 
     try:
-        with smtplib.SMTP("smtp.gmail.com", 587) as server:
-            server.starttls()
-            server.login(sender_email, sender_password)
-            server.send_message(message)
+        with smtplib.SMTP_SSL("smtp.gmail.com", 465) as server:
+             server.login(sender_email, sender_password)
+             server.sendmail(sender_email, recipient_email, message)
         st.success("Email sent successfully!")
     except Exception as e:
         st.error(f"Failed to send email: {e}")
