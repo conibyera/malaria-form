@@ -63,10 +63,6 @@ def send_email(pdf_file, recipient_email):
     except Exception as e:
         st.error(f"Failed to send email: {e}")
 
-# Initialize session state
-if "show_others_details" not in st.session_state:
-    st.session_state.show_others_details = False
-
 def main():
     st.title("Rapid Malaria Clinical Assessment Submission Form")
 
@@ -79,18 +75,11 @@ def main():
 
         # Create fields with Yes/No options (default to No)
         for field in fields:
-            if field == "Do you have other signs or symptoms not included in the questionnaire?":
-                response = st.radio(field, options=["No", "Yes"], index=0, key=field)
-                form_data[field] = response
-                if response == "Yes":
-                    st.session_state.show_others_details = True
-                    others_details = st.text_area("Please specify details for 'Others'", key="others_details")
-                    form_data["Others Details"] = others_details
-                else:
-                    st.session_state.show_others_details = False
-            else:
-                form_data[field] = st.radio(field, options=["No", "Yes"], index=0, key=field)
- 
+            form_data[field] = st.radio(field, options=["No", "Yes"], index=0, key=field)
+
+        # Always show the "Others" text area with the heading
+        others_details = st.text_area("If yes, please specify details for 'Others'", key="others_details")
+        form_data["Others Details"] = others_details
 
         submitted = st.form_submit_button("Submit")
 
