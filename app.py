@@ -78,7 +78,7 @@ def main():
 
         # Create fields with Yes/No options (default to No)
         for field in fields:
-            if field == "Others":
+            if field == "Do you have other signs or symptoms not included in the questionnaire?":
                 response = st.radio(field, options=["No", "Yes"], index=0, key=field)
                 if response == "Yes":
                     form_data[field] = response
