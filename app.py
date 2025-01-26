@@ -64,7 +64,7 @@ def send_email(pdf_file, recipient_email):
         st.error(f"Failed to send email: {e}")
 
 def main():
-    st.title("Rapid Malaria Clinical Assessment Submission Form")
+    st.title(" Rapid Malaria Clinical Assessment Submission Form")
     
     with st.form("submission_form"):
         form_data = {}
@@ -80,12 +80,10 @@ def main():
         for field in fields:
             if field == "Do you have other signs or symptoms not included in the questionnaire?":
                 response = st.radio(field, options=["No", "Yes"], index=0, key=field)
+                form_data[field] = response
                 if response == "Yes":
-                    form_data[field] = response
                     others_details = st.text_area("Please specify details for 'Others'", key="others_details")
                     form_data["Others Details"] = others_details
-                else:
-                    form_data[field] = response
             else:
                 form_data[field] = st.radio(field, options=["No", "Yes"], index=0, key=field)
 
@@ -109,4 +107,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
